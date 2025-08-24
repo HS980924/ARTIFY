@@ -21,42 +21,34 @@ public class JwtProvider {
     private final long refreshTokenValidity = 1000L * 60 * 60 * 24 * 7; // 7일
 
     // 토큰 생성
-    public String createAccessToken(String email) {
-        return createToken(email, accessTokenValidity);
+    public String createAccessToken(String userId) {
+        return createToken(userId, accessTokenValidity);
     }
 
-    public String createRefreshToken(String email) {
-        return createToken(email, refreshTokenValidity);
+    public String createRefreshToken(String userId) {
+        return createToken(userId, refreshTokenValidity);
     }
 
-    private String createToken(String email, long validity) {
+    private String createToken(String userId, long validity) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + validity);
 
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(userId)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // 토큰에서 이메일 추출
-    public String getEmailFromToken(String token) {
+    // 토큰에서 userId 추출
+    public String getUserIdFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey.getBytes())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-    }
-
-    public String extractUserId(String token) {
-        return Jwts.parser()
-                .setSigningKey(secretKey.getBytes())
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject(); // 일반적으로 subject에 userId 저장
     }
 
     // 토큰 유효성 검증

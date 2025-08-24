@@ -1,5 +1,6 @@
 package com.born.artify.domain.user.service;
 import com.born.artify.domain.user.dto.CreateUserDTO;
+import com.born.artify.domain.user.dto.UserOpenAIKeyReqDTO;
 import com.born.artify.domain.user.entity.User;
 
 import com.born.artify.domain.user.repository.UserRepository;
@@ -42,4 +43,31 @@ public class UserService {
 
         return user;
     }
+
+    public User getUser(int userId) {
+
+        User user = userRepository.findById((long)userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return user;
+    }
+
+    public User setUserOpenAiKey(int userId, UserOpenAIKeyReqDTO dto){
+
+
+        User user = userRepository.findById((long)userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if(dto == null)
+        {
+            user.setOpen_key(null);
+        }else{
+            user.setOpen_key(dto.getOpenAiKey());
+        }
+        userRepository.save(user);
+
+        return user;
+
+    }
+
 }

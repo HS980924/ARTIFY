@@ -30,17 +30,17 @@ public class AuthService {
             throw new IllegalArgumentException("이메일 또는 비밀번호가 올바르지 않습니다.");
         }
 
-        String accessToken = jwtProvider.createAccessToken(user.getEmail());
-        String refreshToken = jwtProvider.createRefreshToken(user.getEmail());
+        String accessToken = jwtProvider.createAccessToken(user.getId().toString());
+        String refreshToken = jwtProvider.createRefreshToken(user.getId().toString());
 
         return new TokenResDTO(accessToken, refreshToken);
     }
 
     public void logout(String accessToken) {
-        String token = accessToken.replace("Bearer ", "");
+        //String token = accessToken.replace("Bearer ", "");
 
-        // 액세스 토큰에서 사용자 ID 추출
-        String userId = jwtProvider.extractUserId(token);
+        // 액세스 토큰에서 사용자 ID 추출lo
+        //String userId = jwtProvider.extractUserId(token);
 
         // 저장된 RefreshToken 제거
         // refreshTokenRepository.deleteByUserId(userId);

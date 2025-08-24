@@ -6,6 +6,10 @@ import com.born.artify.auth.dto.TokenResDTO;
 import com.born.artify.auth.service.AuthService;
 
 import com.born.artify.config.JwtProvider;
+import com.born.artify.domain.user.dto.CreateUserDTO;
+import com.born.artify.domain.user.entity.User;
+import com.born.artify.domain.user.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.security.core.Authentication;
@@ -22,11 +26,29 @@ public class AuthController {
 
     private final JwtProvider jwtTokenProvider;
     private final AuthService authService;
+    private final UserService userService;
 
-    public AuthController(JwtProvider jwtTokenProvider, AuthService authService) {
+
+    public AuthController(JwtProvider jwtTokenProvider, AuthService authService, UserService userService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.authService = authService;
+        this.userService = userService;
     }
+
+
+
+    @PostMapping("/api/auth/signup")
+    public ResponseEntity<Map<String, Object>> signUp(@Valid @RequestBody CreateUserDTO request) {
+        System.out.println(request);
+        User newUser = userService.createUser(request);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", 200);
+        result.put("msg", "성공적으로 가입되었습니다.");
+
+        return ResponseEntity.ok().body(result);
+    }
+
 
     @PostMapping("/api/auth/login")
     public ResponseEntity<Map<String, Object>>login(@RequestBody LoginReqDTO request) {
@@ -34,7 +56,9 @@ public class AuthController {
 
         Map<String, Object> result = new HashMap<>();
         result.put("status", 200);
-        result.put("msg", "성공적으로 가입되었습니다.");
+        result.put("msg", "성공적으로 로그인이되었습니다.");
+        result.put("accessToken", token.getAccessToken());
+        result.put("refreshToken", token.getRefreshToken());
 
         return ResponseEntity.ok()
                 .header("Authorization", "Bearer " + token.getAccessToken())

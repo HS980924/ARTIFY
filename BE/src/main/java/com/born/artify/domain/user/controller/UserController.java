@@ -1,8 +1,5 @@
 package com.born.artify.domain.user.controller;
-import com.born.artify.domain.user.dto.CreateUserDTO;
-import com.born.artify.domain.user.dto.UserInfoResDTO;
-import com.born.artify.domain.user.dto.UserOpenAIKeyReqDTO;
-import com.born.artify.domain.user.dto.UserOpenAIKeyResDTO;
+import com.born.artify.domain.user.dto.*;
 import com.born.artify.domain.user.service.UserService;
 import com.born.artify.domain.user.entity.User;
 
@@ -45,6 +42,30 @@ public class UserController {
         Map<String, Object> result = new HashMap<>();
         result.put("status", 200);
         result.put("msg", "정보 조회 성공");
+        result.put("data", res);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+
+    @PutMapping("/api/user/me")
+    public ResponseEntity<Map<String, Object>> getUserInfo(@RequestBody UserInfoReqDTO userInfoReqDTO) {
+        int userId = SecurityUtil.getCurrentUserIdAsInt();
+
+        User user = userService.updatedUser(userInfoReqDTO,userId);
+
+        UserInfoResDTO res = new UserInfoResDTO(
+                user.getProfile_url(),
+                user.getUpdated_at(),
+                user.getCreatedAt(),
+                user.getCollection_id(),
+                user.getEmail(),
+                user.getUserName()
+        );
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", 200);
+        result.put("msg", "유저 정보 변경 성공");
         result.put("data", res);
 
         return ResponseEntity.ok().body(result);

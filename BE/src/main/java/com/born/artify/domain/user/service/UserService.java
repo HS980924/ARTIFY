@@ -1,5 +1,6 @@
 package com.born.artify.domain.user.service;
 import com.born.artify.domain.user.dto.CreateUserDTO;
+import com.born.artify.domain.user.dto.UserInfoReqDTO;
 import com.born.artify.domain.user.dto.UserOpenAIKeyReqDTO;
 import com.born.artify.domain.user.entity.User;
 
@@ -34,6 +35,21 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword())); // 비밀번호 암호화
 
         return userRepository.save(user); // 저장
+    }
+
+
+    @Transactional
+    public User updatedUser(UserInfoReqDTO request, int userId){
+
+        User user = getUser(userId);
+
+        if(request.getUsername() != null)
+            user.setUserName(request.getUsername());
+        if(request.getPassword() != null)
+            user.setPassword(passwordEncoder.encode(request.getPassword()));  // 비밀번호 암호화
+
+        return userRepository.save(user); // 저장
+
     }
 
     public User getUser(String email) {

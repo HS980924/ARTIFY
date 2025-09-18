@@ -5,7 +5,7 @@ FROM python:3.10.12-slim
 WORKDIR /app
 
 # requirements.txt 복사 및 설치
-COPY requirements.txt ./requirements.txt
+COPY environments/requirements.txt ./requirements.txt
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
@@ -13,4 +13,4 @@ RUN pip install --upgrade pip && \
 COPY . .
 
 # uvicorn 실행 (Render에서 제공하는 PORT 환경변수 사용)
-CMD ["sh", "-c", "cd .. && uvicorn main:app --host 0.0.0.0 --port $PORT"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port $PORT"]

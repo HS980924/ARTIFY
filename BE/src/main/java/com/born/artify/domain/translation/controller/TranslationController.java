@@ -51,7 +51,7 @@ public class TranslationController {
 
         HttpEntity<TranslateReqDTO> entity = new HttpEntity<>(dto, headers);
 
-        System.out.println(entity);
+        System.out.println(translateServer);
 
         ResponseEntity<Object> response = restTemplate.postForEntity(translateServer, entity, Object.class);
 

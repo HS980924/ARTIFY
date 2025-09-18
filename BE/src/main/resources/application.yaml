@@ -29,4 +29,4 @@ jwt:
   secret: "THIS_IS_A_VERY_STRONG_SECRET_KEY_1234567890!@#$%^&*"
 
 translateServer:
-  url: "http://localhost:3006/translate"
+  url: "https://artify-xumh.onrender.com/translate"

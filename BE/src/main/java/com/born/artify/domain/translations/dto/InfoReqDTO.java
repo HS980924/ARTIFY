@@ -1,13 +1,19 @@
-package com.born.artify.domain.translation.dto;
+package com.born.artify.domain.translations.dto;
 
+import lombok.Data;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Data
 public class InfoReqDTO {
 
     private final LanguageReqDTO language;
     private final ParamsReqDTO params;
     private final String template;
-    private final Object template_variable;
+    private Map<String, String> template_variable = new HashMap<>();
 
-    public InfoReqDTO(LanguageReqDTO language, ParamsReqDTO params, String template, Object template_variable) {
+    public InfoReqDTO(LanguageReqDTO language, ParamsReqDTO params, String template, Map<String, String>  template_variable) {
         this.language = language;
         this.params = params;
         this.template = template;
@@ -22,11 +28,15 @@ public class InfoReqDTO {
         return params;
     }
 
-    public Object getTemplate() {
+    public String getTemplate() {
         return template;
     }
 
-    public Object getTemplate_variable() {
+    public Map<String, String> getTemplate_variable() {
         return template_variable;
+    }
+
+    public void addTemplateVariable(String key, String value) {
+        template_variable.put(key, value);
     }
 }

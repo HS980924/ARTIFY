@@ -5,43 +5,38 @@ import java.util.UUID;
 import com.born.artify.domain.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 @Table(name = "Collections") // 예약어 처리
 public class Collections {
-
     @Id
-    @Column(name = "coll_uuid", columnDefinition = "BINARY(16)")
-    private UUID coll_uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "coll_id")
+    private long coll_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // b_id가 참조하는 다른 엔티티
 
+    @Column(name = "temperature")
+    private double temperature;
+
+    @Column(name = "top_p")
+    private double top_p;
+
+    @Column(name = "frequency_penalty")
+    private double frequency_penalty;
+
+    @Column(name = "presence_penalty")
+    private double presence_penalty;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public UUID getColl_uuid() {
-        return coll_uuid;
-    }
-
-    public void setColl_uuid(UUID coll_uuid) {
-        this.coll_uuid = coll_uuid;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 }

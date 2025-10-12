@@ -1,4 +1,4 @@
-package com.born.artify.domain.translation.dto;
+package com.born.artify.domain.translations.dto;
 
 public class LanguageReqDTO {
 

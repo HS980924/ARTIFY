@@ -24,3 +24,7 @@ hs_err_pid*
 replay_pid*
 
 BE/BE_p/environments/.env
+
+
+BE/src/main/resources/application.properties
+BE/src/main/resources/application.yaml
